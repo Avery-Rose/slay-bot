@@ -1,7 +1,9 @@
 const { REST, SlashCommandBuilder, Routes } = require('discord.js');
-const { clientId, guildId } = require('./config.json');
+const { clientId, clientIdBeta, guildId } = require('./config.json');
 const chalk = require('chalk');
 require('dotenv').config();
+
+const appId = process.env.NODE_ENV === 'production' ? clientId : clientIdBeta;
 
 const fs = require('fs');
 const path = require('path');
@@ -23,7 +25,7 @@ const deploy = async (guildId, clearsConsole) => {
   const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
   await rest
-    .put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
+    .put(Routes.applicationGuildCommands(appId, guildId), { body: commands })
     .catch((err) => {
       clear();
       console.log(chalk.red('Error while registering commands'));

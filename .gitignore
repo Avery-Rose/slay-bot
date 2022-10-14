@@ -1,3 +1,4 @@
 firebase-admin.json
 node_modules
 .env
+*lock
