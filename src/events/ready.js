@@ -6,6 +6,8 @@ module.exports = {
   name: 'ready',
   once: true,
   execute(client) {
+    // Set status
+    client.user.setActivity('Meow', { type: 'LISTENING' });
     console.log(`Logged in as ${chalk.green(client.user.tag)}`);
     printDivider();
 
@@ -14,8 +16,9 @@ module.exports = {
     // Register slash commands for all guilds
     for (guild of guilds) {
       deploy(guild[1].id);
-      console.log(`Registered slash commands for ${chalk.green(guild[1].name)}`);
+      console.log(
+        `Registered slash commands for ${chalk.green(guild[1].name)}`
+      );
     }
-
   },
 };
