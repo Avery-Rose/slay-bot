@@ -5,6 +5,7 @@ module.exports = {
   name: 'inviteCreate',
   execute(invite) {
     const { guild, inviter } = invite;
+    if (!inviter) return;
     const { username } = inviter;
     console.log(
       `Invite Created: ${chalk.green(username)} in ${chalk.green(guild.name)}`
