@@ -4,9 +4,12 @@ const chalk = require('chalk');
 const db = admin.firestore();
 const firestoreGet = async (collection, doc) => {
   const docRef = db.collection(collection).doc(doc);
-  const docSnap = await docRef.get();
+  const docSnap = await docRef.get().catch((err) => {
+    console.error(chalk.red(err));
+    return null;
+  });
 
-  if (docSnap.exists) {
+  if (docSnap?.exists) {
     console.log(chalk.green(`Document data: ${docSnap.data()}`));
     return docSnap.data();
   } else {
