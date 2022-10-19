@@ -1,6 +1,10 @@
 const chalk = require('chalk');
 const fetch = require('node-fetch');
 
+const firestoreGet = require('../util/firestoreGet');
+const firestoreAdd = require('../util/firestoreAdd');
+const { PermissionsBitField } = require('discord.js');
+
 const getBreedsList = async () => {
   const response = await fetch('https://api.thecatapi.com/v1/breeds');
   const breeds = await response.json();
@@ -108,6 +112,46 @@ module.exports = {
         content: 'Reactions added! 😺',
         ephemeral: true,
       });
+    }
+
+    // Button interactions
+    if (interaction.isButton()) {
+      const btnArgs = interaction.customId.split(' ');
+      const btnName = btnArgs[0];
+      const btnValue = btnArgs[1];
+
+      const member = interaction.member;
+      const target = interaction.guild.members.cache.get(btnValue);
+
+      switch (btnName) {
+        case 'unmute':
+          if (!target)
+            return interaction.reply({
+              content: 'No Target!',
+              ephemeral: true,
+            });
+
+          if (!member.permissions.has(PermissionsBitField.muteMembers))
+            return interaction.reply({
+              content: 'You do not have permission to use this button!',
+              ephemeral: true,
+            });
+
+          target.timeout(
+            null,
+            `Unmuted by ${interaction.user.tag} using button`
+          );
+          await interaction.reply({
+            content: `${target} unmuted! 🎉`,
+            ephemeral: true,
+          });
+          break;
+        default:
+          await interaction.reply({
+            content: 'This button does nothing! 😿',
+            ephemeral: true,
+          });
+      }
     }
   },
 };

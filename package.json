@@ -10,11 +10,13 @@
     "fast-average-color": "^9.1.1",
     "fast-average-color-node": "^2.4.0",
     "firebase-admin": "^11.1.0",
+    "get-video-id": "^3.6.5",
     "inquirer": "^8.0.0",
     "node-emoji": "^1.11.0",
     "nodemon": "^2.0.20",
     "os-utils": "^0.0.14",
-    "sharp": "^0.31.1"
+    "sharp": "^0.31.1",
+    "tiktok-down": "^1.1.5"
   },
   "scripts": {
     "start": "node .",
