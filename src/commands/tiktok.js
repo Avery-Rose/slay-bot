@@ -6,6 +6,8 @@ const {
 const tiktok = require('tiktok-down');
 const fetch = require('node-fetch');
 
+const formatNumber = require('../util/formatNumber');
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('tiktok')
@@ -48,7 +50,11 @@ module.exports = {
           .setTitle(data.video?.signature)
           .setURL(`${data.owner.ProfilePage}/video/${data.video?.id}`)
           .setFooter({
-            text: `♥ ${data.video.heartCount} | 💬 ${data.video.commentCount} | 📥 ${data.video.shareCount} | 👀 ${data.video.viewCount}`,
+            text: `♥ ${formatNumber(data.video.heartCount)} | 💬 ${formatNumber(
+              data.video.commentCount
+            )} | 📥 ${formatNumber(data.video.shareCount)} | 👀 ${formatNumber(
+              data.video.viewCount
+            )}`,
           })
           .setColor(0x00ff00);
         const video = await fetch(data.video.url);
