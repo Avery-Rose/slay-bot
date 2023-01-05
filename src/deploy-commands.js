@@ -8,7 +8,7 @@ const appId = process.env.NODE_ENV === 'production' ? clientId : clientIdBeta;
 const fs = require('fs');
 const path = require('path');
 
-const deploy = async (guildId, clearsConsole) => {
+const deployGuild = async (guildId, clearsConsole) => {
   const clear = () => (clearsConsole ? console.clear() : null);
   clear();
 
@@ -28,10 +28,40 @@ const deploy = async (guildId, clearsConsole) => {
     .put(Routes.applicationGuildCommands(appId, guildId), { body: commands })
     .catch((err) => {
       clear();
-      console.log(chalk.red('Error while registering commands'));
-      console.error(err);
-      process.exit(1);
+      throw new Error('Error while registering commands', err);
     });
+};
+
+const deployGlobal = async (clearsConsole) => {
+  const clear = () => (clearsConsole ? console.clear() : null);
+  clear();
+
+  const commands = [];
+  const commandFiles = fs
+    .readdirSync(path.join(__dirname, 'commands'))
+    .filter((file) => file.endsWith('.js'));
+
+  for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    commands.push(command.data.toJSON());
+  }
+
+  const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
+
+  await rest
+    .put(Routes.applicationCommands(appId), { body: commands })
+    .catch((err) => {
+      clear();
+      throw new Error('Error while registering commands', err);
+    });
+};
+
+const deploy = async (guildId = null, clearsConsole = false) => {
+  if (guildId) {
+    await deployGuild(guildId, clearsConsole);
+  } else {
+    await deployGlobal(clearsConsole);
+  }
 };
 
 process.on('exit', (code) => {
@@ -39,4 +69,4 @@ process.on('exit', (code) => {
   console.log(chalk.red('Process exited with code: ' + code));
 });
 
-module.exports = deploy;
+module.exports = { deploy, deployGuild, deployGlobal };
