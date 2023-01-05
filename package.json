@@ -5,7 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "chalk": "4.1.2",
-    "discord.js": "^14.6.0",
+    "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "fast-average-color": "^9.1.1",
     "fast-average-color-node": "^2.4.0",
