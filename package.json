@@ -15,8 +15,7 @@
     "node-emoji": "^1.11.0",
     "nodemon": "^2.0.20",
     "os-utils": "^0.0.14",
-    "sharp": "^0.31.1",
-    "tiktok-down": "^1.1.5"
+    "sharp": "^0.31.1"
   },
   "scripts": {
     "start": "node .",
